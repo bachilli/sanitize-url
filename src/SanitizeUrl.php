@@ -9,6 +9,7 @@ class SanitizeUrl
     const HTML_CTRL_ENTITY_REGEX = '/&(newline|tab);/i';
     const HTML_CTRL_ENTITY_REGEX2 = '/\s+/S';
     const CTRL_CHARACTERS_REGEX = '/\\\\u([0-9A-F]{0,4})|\\\\x[0-9A-F]{0,2}/';
+    const INVISIBLE_CHARACTERS_REGEX = '/\p{C}+/u';
     const URL_SCHEME_REGEX = '/^.+(:|&colon;)/im';
     const RELATIVE_FIRST_CHARACTERS = [".", "/"];
 
@@ -18,6 +19,7 @@ class SanitizeUrl
         $url = preg_replace(self::HTML_CTRL_ENTITY_REGEX, '', $url);
         $url = preg_replace(self::HTML_CTRL_ENTITY_REGEX2, '', $url);
         $url = preg_replace(self::CTRL_CHARACTERS_REGEX, '', $url);
+        $url = preg_replace(self::INVISIBLE_CHARACTERS_REGEX, '', $url);
         $url = trim($url);
 
         if (!$url) {
