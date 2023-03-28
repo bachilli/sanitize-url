@@ -153,3 +153,43 @@ it('disallows ${protocol} urls that use &colon; for the colon portion of the url
         sprintf("%s&COLON;alert(document.domain)", $protocol)
     ))->toBe('about:blank');
 })->with(["javascript", "data", "vbscript"]);
+
+it('disregards capitalization for ${protocol} urls', function (string $protocol) use ($sanitizeUrl) {
+    expect($sanitizeUrl->sanitizeUrl(
+        sprintf("%s:alert(document.domain)", $protocol)
+    ))->toBe('about:blank');
+})->with(["JaVaScRipT", "DaTa", "VbScRiPt"]);
+
+it('ignores invisible ctrl characters in ${protocol} urls', function (string $protocol) use ($sanitizeUrl) {
+    expect($sanitizeUrl->sanitizeUrl(
+        urldecode(
+            sprintf("%s:alert(document.domain)", $protocol)
+        )
+    ))->toBe('about:blank');
+})->with(
+    [
+        "ja%EF%BB%BF%EF%BB%BFv%e2%80%8bascript",
+        "da%EF%BB%BF%EF%BB%BFt%e2%80%8ba",
+        "vb%EF%BB%BF%EF%BB%BFs%e2%80%8bcript"
+    ]
+);
+
+it('replaces ${protocol} urls with about:blank when url begins with %20', function (string $protocol) use ($sanitizeUrl) {
+    expect($sanitizeUrl->sanitizeUrl(
+        urldecode(
+            "%20%20%20%20$protocol:alert(document.domain)"
+        )
+    ))->toBe('about:blank');
+})->with(["javascript", "data", "vbscript"]);
+
+it('replaces ${protocol} urls with about:blank when ${protocol} url begins with spaces', function (string $protocol) use ($sanitizeUrl) {
+    expect($sanitizeUrl->sanitizeUrl(
+            "    $protocol:alert(document.domain)"
+    ))->toBe('about:blank');
+})->with(["javascript", "data", "vbscript"]);
+
+it('does not replace ${protocol}: if it is not in the scheme of the URL', function (string $protocol) use ($sanitizeUrl) {
+    expect($sanitizeUrl->sanitizeUrl(
+        "http://example.com#$protocol:foo"
+    ))->toBe("http://example.com#$protocol:foo");
+})->with(["javascript", "data", "vbscript"]);
