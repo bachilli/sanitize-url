@@ -14,65 +14,65 @@ it("does not alter http URLs with ports with alphanumeric characters", function 
     );
 });
 
-  it("does not alter https URLs with alphanumeric characters", function () use ($sanitizeUrl) {
+it("does not alter https URLs with alphanumeric characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('https://example.com'))->toBe("https://example.com");
 });
 
-  it("does not alter https URLs with ports with alphanumeric characters", function () use ($sanitizeUrl) {
+it("does not alter https URLs with ports with alphanumeric characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('https://example.com:4567/path/to:something'))->toBe(
         "https://example.com:4567/path/to:something"
     );
 });
 
-  it("does not alter relative-path reference URLs with alphanumeric characters", function () use ($sanitizeUrl) {
+it("does not alter relative-path reference URLs with alphanumeric characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('./path/to/my.json'))->toBe("./path/to/my.json");
 });
 
-  it("does not alter absolute-path reference URLs with alphanumeric characters", function () use ($sanitizeUrl) {
+it("does not alter absolute-path reference URLs with alphanumeric characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('/path/to/my.json'))->toBe("/path/to/my.json");
 });
 
-  it("does not alter protocol-less network-path URLs with alphanumeric characters", function () use ($sanitizeUrl) {
+it("does not alter protocol-less network-path URLs with alphanumeric characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('//google.com/robots.txt'))->toBe(
         "//google.com/robots.txt"
     );
 });
 
-  it("does not alter protocol-less URLs with alphanumeric characters", function () use ($sanitizeUrl) {
+it("does not alter protocol-less URLs with alphanumeric characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('www.example.com'))->toBe("www.example.com");
 });
 
-  it("does not alter deep-link urls with alphanumeric characters", function () use ($sanitizeUrl) {
+it("does not alter deep-link urls with alphanumeric characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('com.braintreepayments.demo://example'))->toBe(
         "com.braintreepayments.demo://example"
     );
 });
 
-  it("does not alter mailto urls with alphanumeric characters", function () use ($sanitizeUrl) {
+it("does not alter mailto urls with alphanumeric characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('mailto:test@example.com?subject=hello+world'))->toBe(
         "mailto:test@example.com?subject=hello+world"
     );
 });
 
-  it("does not alter urls with accented characters", function () use ($sanitizeUrl) {
+it("does not alter urls with accented characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('www.example.com/with-áccêntš'))->toBe(
         "www.example.com/with-áccêntš"
     );
 });
 
-  it("does not strip harmless unicode characters", function () use ($sanitizeUrl) {
+it("does not strip harmless unicode characters", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl('www.example.com/лот.рфшишкиü–'))->toBe(
         "www.example.com/лот.рфшишкиü–"
     );
 });
 
-  it("strips out ctrl chars", function () use ($sanitizeUrl) {
+it("strips out ctrl chars", function () use ($sanitizeUrl) {
     expect(
         $sanitizeUrl->sanitizeUrl('www.example.com/\u200D\u0000\u001F\x00\x1F\uFEFFfoo')
     )->toBe("www.example.com/foo");
 });
 
-  it("replaces blank urls with about:blank", function () use ($sanitizeUrl) {
+it("replaces blank urls with about:blank", function () use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl(''))->toBe("about:blank");
 });
 
@@ -127,10 +127,10 @@ it('decodes html entities', function (string $vector) use ($sanitizeUrl) {
     ' &#14; javascript:alert(\'XSS\');',
     'javasc&Tab;ript: alert(\'XSS\');',
 ])->expect($sanitizeUrl->sanitizeUrl('&#104;&#116;&#116;&#112;&#115;&#0000058//&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;/&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041'))
-->toBe('https://example.com/javascript:alert(\'XSS\')');
+    ->toBe('https://example.com/javascript:alert(\'XSS\')');
 
 it('replaces ${protocol} urls with about:blank', function (string $protocol) use ($sanitizeUrl) {
-    expect($sanitizeUrl->sanitizeUrl($protocol.':alert(document.domain)'))
+    expect($sanitizeUrl->sanitizeUrl($protocol . ':alert(document.domain)'))
         ->toBe('about:blank');
 })->with(["javascript", "data", "vbscript"]);
 
@@ -184,7 +184,7 @@ it('replaces ${protocol} urls with about:blank when url begins with %20', functi
 
 it('replaces ${protocol} urls with about:blank when ${protocol} url begins with spaces', function (string $protocol) use ($sanitizeUrl) {
     expect($sanitizeUrl->sanitizeUrl(
-            "    $protocol:alert(document.domain)"
+        "    $protocol:alert(document.domain)"
     ))->toBe('about:blank');
 })->with(["javascript", "data", "vbscript"]);
 
