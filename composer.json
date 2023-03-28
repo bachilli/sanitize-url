@@ -1,0 +1,44 @@
+{
+    "name": "bachilli/sanitize-url",
+    "description": "PHP port of braintree/sanitize-url package",
+    "keywords": [
+        "bachilli",
+        "php",
+        "sanitize-url",
+        "braintree/sanitize-url",
+        "xss"
+    ],
+    "homepage": "https://github.com/bachilli/sanitize-url",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Philippe Bachilli",
+            "email": "bachilli@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "type": "library",
+    "require": {
+        "php": "^7.4|^8.0|^8.1"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Bachilli\\SanitizeUrl\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bachilli\\SanitizeUrl\\Tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.2",
+        "psy/psysh": "@stable"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
