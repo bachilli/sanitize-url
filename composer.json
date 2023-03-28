@@ -5,7 +5,7 @@
         "bachilli",
         "php",
         "sanitize-url",
-        "braintree/sanitize-url",
+        "braintree-sanitize-url",
         "xss"
     ],
     "homepage": "https://github.com/bachilli/sanitize-url",
